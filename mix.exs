@@ -14,7 +14,7 @@ defmodule SampleRakutenGenre.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :ecto, :mariaex]]
+    [applications: [:logger, :ecto, :mariaex, :poison]]
   end
 
   # Dependencies can be Hex packages:
@@ -27,7 +27,11 @@ defmodule SampleRakutenGenre.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [ {:ecto, "~> 1.0"},
+    [
+      {:apex, "~>0.3.2"},
+      {:httpoison, "~> 0.7.4"},
+      {:poison, "~> 1.5"},
+      {:ecto, "~> 1.0"},
       {:mariaex, ">= 0.0.0"}
     ]
   end
