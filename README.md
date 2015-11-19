@@ -1,2 +1,9 @@
-# sample_rakuten_genre
-Sample: Rakuten Genre
+# SampleRakutenGenre
+
+**TODO: Add description**
+
+## Installation
+
+```
+mix deps.get
+```

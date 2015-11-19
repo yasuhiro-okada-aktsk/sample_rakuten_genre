@@ -1,0 +1,2 @@
+defmodule SampleRakutenGenre do
+end
