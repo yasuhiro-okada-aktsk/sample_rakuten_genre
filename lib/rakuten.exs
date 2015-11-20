@@ -24,11 +24,17 @@ defmodule Main do
     SampleRakutenGenre.Repo.start_link
     RakutenApi.start
 
+    fetch_uncompleted
+  end
+
+  def fetch_uncompleted() do
     genres = RakutenGenre
     |> where([g], g.completed == 0)
     |> Repo.all
 
-    fetch(genres)
+    unless length(genres) == 0 do
+      fetch(genres)
+    end
   end
 
   def fetch([%{genre_id: parent}|tl]) do
@@ -40,10 +46,11 @@ defmodule Main do
     save(parent, body["children"])
 
     :timer.sleep(500)
+    fetch(tl)
   end
 
   def fetch([]) do
-    # noop
+    fetch_uncompleted()
   end
 
   def save(parent, [%{"child" => genre}|tl]) do
