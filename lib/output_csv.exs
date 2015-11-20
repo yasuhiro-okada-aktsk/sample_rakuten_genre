@@ -10,7 +10,7 @@ defmodule Main do
   def main do
     SampleRakutenGenre.Repo.start_link
 
-    {:ok, file} = File.open "output.log", [:write]
+    {:ok, file} = File.open "output.csv", [:write]
     print {0, 2, file}
     File.close file
   end
