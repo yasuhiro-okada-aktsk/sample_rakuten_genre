@@ -15,6 +15,8 @@ end
 defmodule Main do
   require Logger
 
+  import Ecto.Query
+
   alias SampleRakutenGenre.Repo
   alias SampleRakutenGenre.RakutenGenre
 
@@ -22,12 +24,26 @@ defmodule Main do
     SampleRakutenGenre.Repo.start_link
     RakutenApi.start
 
-    body = case RakutenApi.get(0) do
+    genres = RakutenGenre
+    |> where([g], g.completed == 0)
+    |> Repo.all
+
+    fetch(genres)
+  end
+
+  def fetch([%{genre_id: parent}|tl]) do
+    body = case RakutenApi.get(parent) do
       {:ok, %{ body: body}} -> body
       res -> raise inspect res
     end
 
-    save(0, body["children"])
+    save(parent, body["children"])
+
+    :timer.sleep(500)
+  end
+
+  def fetch([]) do
+    # noop
   end
 
   def save(parent, [%{"child" => genre}|tl]) do
@@ -44,7 +60,13 @@ defmodule Main do
   end
 
   def save(parent, []) do
-    # TODO update complete
+    unless parent == 0 do
+      RakutenGenre
+      |> where([g], g.genre_id == ^parent)
+      |> Repo.one
+      |> RakutenGenre.changeset_update
+      |> Repo.update
+    end
   end
 end
 

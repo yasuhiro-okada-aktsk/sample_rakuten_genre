@@ -24,4 +24,11 @@ defmodule SampleRakutenGenre.RakutenGenre do
     |> cast(params, ~w(genre_id genre_name genre_level genre_parent completed), ~w())
     |> unique_constraint(:genre_id)
   end
+
+  def changeset_update(model) do
+    params = %{completed: 1}
+
+    model
+    |> cast(params, ~w(completed), ~w())
+  end
 end
